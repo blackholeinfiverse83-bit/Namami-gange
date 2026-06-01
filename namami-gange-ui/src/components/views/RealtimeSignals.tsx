@@ -1,10 +1,36 @@
+'use client';
+
 import React from 'react';
 import styles from './View.module.css';
 import SignalList from '../shared/SignalList';
 import ReasoningPanel from '../shared/ReasoningPanel';
-import MapContainer from '../map/MapContainer';
+import MapCard from '../shared/MapCard';
 
-export default function RealtimeSignals() {
+interface ReplayLog {
+  timestamp: string;
+  corrId: string;
+  block: number;
+  status: 'VERIFIED' | 'COMPATIBLE' | 'BREACH' | 'REPLAYING';
+  message: string;
+}
+
+interface RealtimeSignalsProps {
+  replayLogs?: ReplayLog[];
+  validationBreach?: boolean;
+  selectedLocationId?: string;
+  suitabilityLocations?: Record<string, any>;
+  onLocationSelect?: (id: string) => void;
+}
+
+export default function RealtimeSignals({
+  replayLogs = [],
+  validationBreach = false,
+  selectedLocationId = 'varanasi',
+  suitabilityLocations,
+  onLocationSelect
+}: RealtimeSignalsProps) {
+  const activeLocation = suitabilityLocations?.[selectedLocationId];
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -22,14 +48,18 @@ export default function RealtimeSignals() {
             <button style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', paddingBottom: '10px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Anomalies</button>
             <button style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', paddingBottom: '10px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Observations</button>
           </div>
-          <SignalList />
+          <SignalList logs={replayLogs} />
         </div>
         
         <div className={styles.signalsDetailSide}>
           <div className={styles.mapSmall}>
-            <MapContainer type="basin" />
+            <MapCard 
+              selectedMarkerId={selectedLocationId} 
+              onMarkerSelect={onLocationSelect} 
+              activeLayers={['waterways']}
+            />
           </div>
-          <ReasoningPanel />
+          <ReasoningPanel activeLocation={activeLocation} />
           
           <div className={styles.listCard} style={{ padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
@@ -53,17 +83,17 @@ export default function RealtimeSignals() {
                 <text x="360" y="95" fill="var(--text-dim)" fontSize="9" textAnchor="middle" fontFamily="var(--font-mono)">24:00</text>
 
                 {/* Line chart */}
-                <path d="M 0 70 Q 20 60 40 40 T 80 50 T 120 20 T 160 30 T 200 10 T 240 40 T 280 20 T 320 50 T 360 40 T 400 60" fill="none" stroke="var(--river-blue)" strokeWidth="2.5" />
+                <path d="M 0 70 Q 20 60 40 40 T 80 50 T 120 20 T 160 30 T 200 10 T 240 40 T 280 20 T 320 50 T 360 40 T 400 60" fill="none" stroke={validationBreach ? 'var(--alert-red)' : 'var(--river-blue)'} strokeWidth="2.5" />
                 
                 {/* Area fill */}
-                <path d="M 0 70 Q 20 60 40 40 T 80 50 T 120 20 T 160 30 T 200 10 T 240 40 T 280 20 T 320 50 T 360 40 T 400 60 L 400 80 L 0 80 Z" fill="rgba(30,136,229,0.1)" />
+                <path d="M 0 70 Q 20 60 40 40 T 80 50 T 120 20 T 160 30 T 200 10 T 240 40 T 280 20 T 320 50 T 360 40 T 400 60 L 400 80 L 0 80 Z" fill={validationBreach ? 'rgba(239, 68, 68, 0.1)' : 'rgba(30,136,229,0.1)'} />
 
                 {/* Data points */}
                 <circle cx="40" cy="40" r="3.5" fill="var(--river-blue)" />
                 <circle cx="120" cy="20" r="3.5" fill="var(--river-blue)" />
-                <circle cx="200" cy="10" r="4.5" fill="var(--alert-red)" className={styles.mapRipple} />
-                <circle cx="200" cy="10" r="3.5" fill="var(--alert-red)" />
-                <circle cx="280" cy="20" r="3.5" fill="var(--alert-orange)" />
+                <circle cx="200" cy="10" r="4.5" fill={validationBreach ? 'var(--alert-red)' : 'var(--teal)'} className={styles.mapRipple} />
+                <circle cx="200" cy="10" r="3.5" fill={validationBreach ? 'var(--alert-red)' : 'var(--teal)'} />
+                <circle cx="280" cy="20" r="3.5" fill="var(--amber)" />
                 <circle cx="360" cy="40" r="3.5" fill="var(--river-blue)" />
               </svg>
             </div>

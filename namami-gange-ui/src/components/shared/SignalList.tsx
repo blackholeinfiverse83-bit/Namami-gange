@@ -1,40 +1,78 @@
+'use client';
+
 import React from 'react';
 import styles from './SignalList.module.css';
 
-interface Signal {
-  id: string;
-  time: string;
-  text: string;
-  severity: 'low' | 'medium' | 'high';
+interface ReplayLog {
+  timestamp: string;
+  corrId: string;
+  block: number;
+  status: 'VERIFIED' | 'COMPATIBLE' | 'BREACH' | 'REPLAYING';
+  message: string;
 }
 
-const signals: Signal[] = [
-  { id: 'SIG-1042', time: '10 min ago', text: 'High Turbidity Detected (Ganga River, Patna)', severity: 'high' },
-  { id: 'SIG-1043', time: '25 min ago', text: 'Industrial Discharge Detected (Yamuna River, Delhi)', severity: 'medium' },
-  { id: 'SIG-1044', time: '45 min ago', text: 'Flood Risk Increase (Damodar River, Lucknow)', severity: 'high' },
-  { id: 'SIG-1045', time: '1 hr ago', text: 'Low Dissolved Oxygen (Kosi River, Bihar)', severity: 'medium' },
-  { id: 'SIG-1046', time: '2 hr ago', text: 'Illegal Sand Mining Detected (Son River, Bihar)', severity: 'high' },
-];
+interface SignalListProps {
+  logs?: ReplayLog[];
+}
 
-export default function SignalList() {
+export default function SignalList({ logs = [] }: SignalListProps) {
+  const getSeverity = (status: string) => {
+    switch (status) {
+      case 'BREACH': return 'high';
+      case 'REPLAYING': return 'medium';
+      case 'COMPATIBLE': return 'low';
+      case 'VERIFIED':
+      default:
+        return 'low';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'BREACH': return 'CRITICAL BREACH';
+      case 'COMPATIBLE': return 'COMPATIBLE';
+      case 'REPLAYING': return 'REPLAYING';
+      case 'VERIFIED':
+      default:
+        return 'VERIFIED';
+    }
+  };
+
+  // If no logs, show some initial historical logs
+  const displayLogs = logs.length > 0 ? logs : [
+    { timestamp: '15:14:02', corrId: 'CORR-2026-0528-9941X', block: 1240, status: 'VERIFIED', message: 'Ingestion schema contract match on Varanasi-seaplane' },
+    { timestamp: '15:13:48', corrId: 'CORR-2026-0528-9940Y', block: 1239, status: 'COMPATIBLE', message: 'Backward compatibility validated for Patna terminal payload' }
+  ] as ReplayLog[];
+
   return (
     <div className={styles.container}>
-      {signals.map((signal) => (
-        <div key={signal.id} className={styles.item}>
-          <div className={`${styles.indicator} ${styles[signal.severity]}`}></div>
-          <div className={styles.content}>
-            <div className={styles.header}>
-              <span className={styles.id}>{signal.id}</span>
-              <span className={styles.time}>{signal.time}</span>
-            </div>
-            <div className={styles.text}>{signal.text}</div>
-            <div className={styles.confidence}>
-              <div className={styles.confBar} style={{ width: signal.severity === 'high' ? '98%' : '85%' }}></div>
-              <span className={styles.confLabel}>Confidence: {signal.severity === 'high' ? '98%' : '85%'}</span>
+      {displayLogs.map((log, i) => {
+        const severity = getSeverity(log.status);
+        return (
+          <div key={i} className={styles.item}>
+            <div className={`${styles.indicator} ${styles[severity]}`}></div>
+            <div className={styles.content}>
+              <div className={styles.header}>
+                <span className={styles.id}>{log.corrId.split('-').pop()}</span>
+                <span className={styles.time}>{log.timestamp}</span>
+              </div>
+              <div className={styles.text}>{log.message}</div>
+              <div className={styles.confidence}>
+                <div 
+                  className={styles.confBar} 
+                  style={{ 
+                    width: log.status === 'BREACH' ? '100%' : '94%',
+                    backgroundColor: log.status === 'BREACH' ? 'var(--alert-red)' : 'var(--teal)'
+                  }}
+                ></div>
+                <span className={styles.confLabel}>
+                  Status: {getStatusText(log.status)} · Block #{log.block}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

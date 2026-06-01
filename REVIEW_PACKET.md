@@ -1,278 +1,137 @@
-# Namami Gange Platform — Sovereign Operational Intelligence
-## Review Packet: Design System, Layout Architecture & Strategic UX
+# Namami Gange Platform — Sovereign Operational Intelligence Command Surface
+## Review Packet: Design System, Layout Architecture & Federation Observability Sprint
 
 > [!IMPORTANT]
-> This review packet serves as the comprehensive strategic authority and visual direction for the Namami Gange Platform. It establishes a government-grade, decision-friendly geospatial intelligence surface that balances sovereign seriousness with environmental and operational calmness.
+> This review packet serves as the comprehensive strategic authority and engineering document for the Namami Gange Platform. It establishes a high-density, government-grade operational command surface where geospatial suitability, federation runtimes, replay chains, and schema contract states converge in a single, deterministic viewport.
 
 ---
 
-## 1. Design Philosophy: "Sovereign Operational Intelligence"
+## 1. Entry Point
 
-The Namami Gange Platform is designed as a **sovereign decision surface** representing real-world infrastructure and river systems. Unlike consumer SaaS panels that prioritize engagement metrics, or gaming-centric dashboard designs that utilize high-contrast "neon-cyberpunk" aesthetics, this platform is engineered for **Operational Calmness**.
-
-* **Civilizational Calmness**: Drawing inspiration from the deep, vast colors of Indian river basins and high-precision scientific surfaces (e.g., ISRO, space telemetry, marine command centers).
-* **Map-Centric Information Layering**: The map is not a layout widget; it is the viewport of truth. Panels, details, and telemetry cards emerge organically as layers from the map, ensuring spatial-visual continuity.
-* **Seriousness of Data**: Visual priority is given to trace codes, confidence indices, and telemetry sensors to establish absolute governance, traceability, and operational speed.
-* **Non-Militarized Authority**: Designed for civilian administrators, logistics managers, and ministry leadership. The interface projects high-grade security, readiness, and strategic intelligence without appearing visually aggressive.
+The operational command surface is structured under a unified modular Next.js router.
+- **Entry point URL**: `/`
+- **Main Page File**: `src/app/page.tsx`
+- **Global Stylesheet**: `src/app/globals.css`
+- **Dashboard Layout Stylesheet**: `src/app/page.module.css`
 
 ---
 
-## 2. Navigation Architecture & UI Flow
+## 2. Core Flow (Max 3 Files)
 
-The platform separates features into logical domains, allowing seamless transition from a macro view to micro telemetry details. 
+To understand the core mechanics of our deterministic dashboard, review the following three pivotal files:
+
+1. **[src/app/page.tsx](file:///d:/Office%20project/Namami%20Gange/namami-gange-ui/src/app/page.tsx)**:
+   - Houses the centralized **Simulated State Engine**.
+   - Handles the 3-second tick loops advancing the active federation stages (`Ingestion -> Validation -> Replay -> Persistence -> Federation`).
+   - Tracks current block heights, cycles correlation IDs, and manages user selection of Northwest-1 corridors (Varanasi, Patna, Kolkata, Kanpur, Prayagraj).
+   - Generates simulated schema validation breaches and triggers backup reconciliation routines.
+   - **New**: Coordinates live state synchronization across *all 9 operational case views* inside `renderContent()`!
+
+2. **[src/components/shared/FederationTopology.tsx](file:///d:/Office%20project/Namami%20Gange/namami-gange-ui/src/components/shared/FederationTopology.tsx)**:
+   - Renders a custom, high-precision SVG network diagram of the federation nodes.
+   - animates moving data packet pulses traveling along connectors using SVG attributes (`cx`, `cy`, `<animate>`).
+   - Displays real-time uptime metrics, latency (ms), and visual indicators representing service health.
+   - Conforms fully to the new design system `TopologyCardProps` specification.
+
+3. **[src/components/shared/MapCard.tsx](file:///d:/Office%20project/Namami%20Gange/namami-gange-ui/src/components/shared/MapCard.tsx)**:
+   - Integrates the geographic viewport of truth, displaying waterway segments, suitability scoring overlays, and seaplane routes.
+   - Supports interactive, hoverable node highlighting and smooth layer filtering overlays, serving as the central coordinator for localized intelligence.
+   - Conforms fully to the design system `MapCardProps` specification.
+
+---
+
+## 3. Live Flow: User → Dashboard → Intelligence Rendering
+
+The flow of user interaction and data updates travels along the following deterministic pipeline:
 
 ```mermaid
 graph TD
-    %% Base Flow
-    AppShell[AppShell Layout Controller] --> SidebarNav[Sidebar Navigation Menu]
-    AppShell --> TopbarAlerts[Topbar Alert Tracker]
+    User([User Selector Action]) -->|Click Waterway Node / Tab| MapNode[Map Interface / List]
+    MapNode -->|Triggers React State| StateEngine[Central State Engine]
     
-    %% Screens
-    SidebarNav --> S1[1. Global Operations Dashboard]
-    SidebarNav --> S2[2. Ganga Basin Intelligence]
-    SidebarNav --> S3[3. Location Intelligence]
-    SidebarNav --> S4[4. Scenario Simulation Engine]
-    SidebarNav --> S5[5. Realtime Signal Center]
-    SidebarNav --> S6[6. Infrastructure Network]
-    SidebarNav --> S7[7. Internal Collaboration]
-    SidebarNav --> S8[8. Dataset & Sources]
-    SidebarNav --> S9[9. CM Governance View]
-
-    %% Deep Links
-    S1 -.-> |Click Telemetry Node| S3
-    S2 -.-> |Open Reasoning Panel| S3
-    S3 -.-> |Trigger Simulation| S4
-    S5 -.-> |Locate Event| S2
-    S6 -.-> |Select Port Node| S3
-
-    classDef screen fill:#0f172a,stroke:#38bdf8,stroke-width:1px,color:#fff;
-    classDef control fill:#1e3a8a,stroke:#3b82f6,stroke-width:2px,color:#fff;
-    class S1,S2,S3,S4,S5,S6,S7,S8,S9 screen;
-    class AppShell,SidebarNav,TopbarAlerts control;
+    %% Inflow simulation
+    TelemetrySensor[(Simulated Waterway Sensors)] -->|Dynamic tele-flux| StateEngine
+    StateEngine -->|Calculates Composite Score| KPIZone[Executive KPI Zone]
+    StateEngine -->|Active node focus & pulses| Topology[Federation Topology Card]
+    StateEngine -->|Updates correlation & block increments| ReplayPanel[Replay Audit Console]
+    
+    %% Reasoning
+    StateEngine -->|Pulls non-blackbox factors & constraints| Reasoning[Nupur Explanation Layer]
+    StateEngine -->|Logs anomalies & schema flags| BottomLedger[Network Recovery & Audit Console]
+    
+    %% Dynamic views link
+    StateEngine -->|Prop Syncs state globally| SubViews[All 8 Domain Views: Location, Basin, Sim, Signals, etc.]
 ```
+
+### Flow Breakdown:
+1. **Selection**: User clicks a geographic node on the interactive SVG map of Northwest-1 (e.g., selecting `Patna Terminal`).
+2. **State Transition**: The State Engine intercepts the click, swapping the active locator ID and pulling local variables (e.g., Patna composite score: `74`, Level: `MEDIUM POTENTIAL`, Siltation risk: `78%`).
+3. **Cognitive Rendering**:
+   - **Executive KPIs**: Instantly render the Patna composite suitability score and composite health flag.
+   - **Geospatial Card**: Highlights the selected terminal with a soft ripple ring, centering coordinates (`25.6112° N, 85.1444° E`).
+   - **Nupur Explanation**: Summarizes exactly **WHY** Patna is graded medium, displaying specific progress bars for draft (72%) vs. siltation constraints (78%).
+   - **Ankita validation**: Back-version compatibility schema validation verifies active contracts against IWAI rules (read-only).
+   - **Unified Sub-view Synced State**: Toggling "Ganga Basin Intel" or "Location Intel" immediately reflects the selected Patna corridor, rendering active channel markers, specific silt progress, and dynamic sensor registries!
 
 ---
 
-## 3. Design System & Style Guide
+## 4. What Was Built
 
-### Core Color Palette
-To project operational stability and readability under long shifts:
+During this convergence sprint, we transformed a basic, loosely structured SaaS dashboard prototype into an operational console:
 
-| Color Token | HEX Value | Usage & Meaning |
-| :--- | :--- | :--- |
-| **Deep Space Navy** | `#050a14` | Primary Application Canvas (reduces eye strain) |
-| **Vapor Surface Blue** | `#0a1120` | Cards, side panels, and elevated containers |
-| **River Flow Blue** | `#1e88e5` | Water systems, navigable paths, and base overlay lines |
-| **Teal Glow** | `#00bfa5` | Luminous status indicators, high confidence scores, and normal limits |
-| **Alert Orange** | `#ff9100` | Degraded telemetry, anomalies, warning zones, and siltation indicators |
-| **Alert Red** | `#ef4444` | Critical thresholds, environmental risk zones, and offline devices |
-| **Eco Green** | `#10b981` | Restored basins, forest covers, and opportunity corridors |
-| **Amber** | `#fbbf24` | National highways, intermodal rail networks, and logistics infrastructures |
-
-### Typography Hierarchy
-* **Primary Display**: `Syne` (Geometric, confident, sovereign structure for logos, headers, and strategic values).
-* **Telemetry & Data**: `Space Mono` (Fixed-width numeric layouts for coordinate systems, sensor scales, and IDs).
-* **Body / System Text**: `Inter` (Neutral, highly readable neutral-grotesque font optimized for high information densities).
-
----
-
-## 4. Core Page Intelligence Logic (All 9 Screens)
-
-### 1. Global Operations Dashboard
-The primary landing dashboard interface.
-* **Geospatial Focus**: Centered on an SVG map of India. Dynamic layer overlays show key waterways (NW-1 to NW-111) and coastal ports.
-* **Signal Stream**: A side panel streams real-time alerts. Critical alerts display animated ripple rings directly on the map.
-* **Strategic Indicators**: Top panel highlights total Active Signals (128), Critical Anomalies (23), and Monitored Locations (1,247).
-
-### 2. Ganga Basin Intelligence View
-A high-resolution river deep-dive.
-* **Hydrography Overlay**: Stylized river path featuring suitability highlights (color-coded by water quality and depth).
-* **Telemetry Nodes**: Clickable markers for Barrages, Jetties, Waterway Ports, and Bridges.
-* **Interactive Panel**: Clicking any node opens a reasoning sidebar synthesizing sensor readings (BOD, DO, flow rate, silt levels).
-
-### 3. Location Intelligence Page
-Granular analysis of a single segment (e.g., Varanasi Hub or Kanpur Industrial corridor).
-* **Suitability Index**: Dynamic visual circular gauges showing composite compatibility rankings.
-* **Constraint Matrices**: Tracks factors (Siltation risk, flow variation, habitat constraints, logistics networks).
-* **Historical Trace**: Shows unique Tracer IDs (e.g., `ND-120-2026-0408`) linking active data points to their original databases.
-
-### 4. Scenario Simulation Page
-Predictive modelling interface for "what if" planning.
-* **Comparative Layout**: Two side-by-side SVG basin representations displaying Baseline vs. Optimized simulations.
-* **Sliders**: Controls priorities (Eco-preservation vs. Economic transport capacity).
-* **Delta Feed**: Real-time stats detail computed changes (e.g., `+18% suitability`, `-12% high-risk area`).
-
-### 5. Realtime Signals / Events Page
-Chronological event stream detailing environmental anomalies.
-* **Event Ledger**: Complete tracking of incoming warnings, anomalies, and observations.
-* **Trace Metadata**: Unique Trace IDs for every entry to ensure complete audit trails.
-* **Confidence Ratings**: Horizontal confidence meters (0% - 100%) indicating sensor stability.
-
-### 6. Infrastructure Network View
-Visualizes intermodal connectivity.
-* **Multi-Layer Mapping**: Displays interconnected waterways, highways, railways, and logistics parks.
-* **Network Health**: Luminous gauges display calculated intermodal connectivity status.
-
-### 7. Internal Collaboration Layer
-Operational coordination hub for decision makers.
-* **Operational Channels**: Categorized chat threads (`#ganga-intelligence`, `#maritime-ops`).
-* **Active Call Panel**: Keeps operators connected with active audio/video feeds, screen shares, and map overlays during crisis periods.
-
-### 8. Dataset / Source Management Page
-Maintains the reliability, trust, and validation of ingested feeds.
-* **Source Registry**: Outlines active connections (ISRO Bhuvan imagery, CWC, IWAI, IMD).
-* **Reliability Metrics**: Visual health indicators showing API status and ingestion loops.
-
-### 9. CM / Governance View (Executive Preview)
-Executive strategic overview dashboard.
-* **Opportunity Zones**: Highlights top potential investment and ecological restoration zones.
-* **Connectivity Gaps**: Pinpoints deficiencies (e.g., last-mile logistics connectivity, offline telemetry stations).
+- **Revised Grid Architecture (Phase 1)**: Formulated a dense three-column, fit-to-viewport grid in `page.tsx` that clusters related observability indices together, eliminating whitespace and preventing vertical scrolling.
+- **Geospatial Layer Coupling (Phase 2)**: Linked live NW-1 waterway coordinates directly to the explanation layers. Included infrastructure opportunities like inland ports, seaplane grids, and regional siltation ratios.
+- **Federation Runtime Topology (Phase 3)**: Developed a dynamic SVG layout showing ingestion brokers, validation nodes, and sync statuses, integrated with moving package pulses.
+- **Replay Observability Deck (Phase 4)**: Created a dedicated read-only console that details deterministic block counts, SHA validation hashes, and correlation tracers.
+- **Executive Cognition Zone (Phase 5)**: Synthesized crucial telemetry to answer "what is happening?" within 3 seconds using HSL tailored colors.
+- **Design System Extraction & Implementation (Phase 6 & 7)**: 
+  - Created `/design-system/` documentation in the root containing: `colors.md`, `spacing.md`, `dashboard_layout_patterns.md`, and `component_library.md`.
+  - Fully built the **7 Reusable Primitives** as modular React files under `src/components/shared/`:
+    - `IntelligenceCard.tsx` (KPI Card)
+    - `AlertCard.tsx` (Alert Card)
+    - `TelemetryCard.tsx` (Telemetry Card)
+    - `ReplayCard.tsx` (Replay Card)
+    - `FederationTopology.tsx` (Topology Card)
+    - `MapCard.tsx` (Map Card)
+    - `ExecutiveMetricCard.tsx` (Executive Metric Card)
+- **Centralized Synchronization (Phase 8)**: Eliminated all hardcoded static mocks by wiring the parent state engine directly into all 8 domain views. Every single view is now fully reactive and live!
 
 ---
 
-## 5. Map Interaction & Visual Logic
+## 5. Failure Cases
 
-```
-   ┌───────────────────────────────────────────────┐
-   │ [ Layer Control ]                             │
-   │  [x] River System  [ ] Railways  [x] Ports    │
-   ├───────────────────────────────────────────────┤
-   │                                               │
-   │      ( Varanasi Port Node )  <- Clicked       │
-   │             o───────┐                         │
-   │             │  (•)  │                         │
-   │             └───────┼────────────────┐        │
-   │                     │ TELEMETRY: 92% │        │
-   │                     │ BOD: 2.1 mg/L  │        │
-   │                     └────────────────┘        │
-   │                                               │
-   └───────────────────────────────────────────────┘
-```
+To guarantee government-grade resilience, the command surface observes and exposes specific recovery and fail-safe protocols:
 
-1. **Seamless Layering**: Smooth transition toggles allow users to instantly display or hide specific infrastructure grids (Waterways, Highways, Rail, and Eco-Zones).
-2. **Timeline Playback**: A scrubbing toolbar allows historical analysis (24 Hours, 30 Days, or seasonal patterns) with animated telemetry adjustments.
-3. **Expandable Node Panels**: Selecting any sensor location triggers a subtle glowing halo around the node and displays a detailed tooltip card showing coordinates and quality indices.
+### Failure Case 1: Schema Compatibility Breach (Ankita validation mismatch)
+- **UI Exposure**: Highlighting a simulated contract validation breach drops "FEDERATION STATE" to `ANOMALOUS` (red pulse), validation nodes light red, and the replay chain log entries turn red (`BREACH` badge).
+- **Recovery Event**: An active entry is instantly pushed into the **Network Recovery & Audit Surface** at the bottom, registering the Correlation ID and spawning a button for manual/automatic database fallback buffers.
+- **Dynamic Propagation**: Toggling schema breach automatically propagates to `RealtimeSignals` (triggering critical red logs), `DatasetSources` (flagging degraded status), and `GovernanceView` (incrementing alerts).
+
+### Failure Case 2: Waterway Depth Volatility (Draft depletion)
+- **UI Exposure**: If seasonal flows cause the Varanasi draft to drop below 2.0m, the navigational progress fill bar triggers a Warning Amber highlight, notifying river traffic controllers of silt bottlenecks.
+- **Resolution**: Operators can trigger a simulated weir synchronization directly from the recovery card logs.
 
 ---
 
-## 6. Frontend Component Hierarchy
+## 6. Verification Proof
 
-The modularity of the React codebase mirrors this architecture:
-
-```
-src/
-├── app/
-│   ├── globals.css (Base variables & dark theme)
-│   ├── page.tsx (Active tab router & Global View)
-│   └── page.module.css (Global dashboard styling)
-├── components/
-│   ├── layout/
-│   │   ├── Sidebar.tsx (Tab control layout)
-│   │   ├── Topbar.tsx (Status bar & system clock)
-│   │   └── Sidebar.module.css
-│   ├── map/
-│   │   ├── MapContainer.tsx (Visual SVG canvas engine)
-│   │   └── MapContainer.module.css
-│   ├── shared/
-│   │   ├── IntelligenceCard.tsx (Stat component)
-│   │   ├── SignalList.tsx (Realtime alert feed)
-│   │   ├── ReasoningPanel.tsx (Telemetry summaries)
-│   │   └── SimulationControls.tsx (Weight sliders)
-│   └── views/
-│       ├── BasinIntelligence.tsx
-│       ├── LocationIntel.tsx
-│       ├── ScenarioSimulation.tsx
-│       ├── RealtimeSignals.tsx
-│       ├── InfraNetwork.tsx
-│       ├── Collaboration.tsx
-│       ├── DatasetSources.tsx
-│       └── GovernanceView.tsx
-```
+- **Compilation Check**: The entire Next.js project compiles cleanly (`npm run build`) with zero TypeScript compiler errors or Turbopack generation blocks.
+- **Interactive Loops**: Successfully verified state engine tick increments, dynamic correlation suffixes, and selected locator data mapping with immediate rendering.
 
 ---
 
-## 7. Rationale Behind Design Choices
+## 7. Design Decisions & Rationale
 
-* **Deep Space Navy over Bright SaaS-Blue**: Minimizes eye strain during long monitoring shifts and enhances visual hierarchy. Luminous elements highlight key information quickly.
-* **Geometric Typography**: Using `Syne` for titles gives a bold, structural look, expressing government ownership and civilizational grounding, while `Space Mono` conveys scientific precision.
-* **Vector SVG Layouts over Heavy Map Engines**: High-performance SVGs are used for layout prototypes. This keeps load times low and ensures a responsive, light UI that can run smoothly on standard workstation terminals without relying on external GIS map services.
-
----
-
-## 8. Scalability & Extensibility Approach
-
-* **Data-Inflow Performance**: Built on a decoupled component architecture. Real-time updates only trigger state updates in small, isolated telemetry containers, avoiding full-page re-renders.
-* **Component Reusability**: All modular panels (gauges, charts, event lists) inherit global token stylings, making it simple to add future basin regions (e.g., Brahmaputra or Godavari systems) with minimal code changes.
-* **API Ingestion Standard**: View models are built to easily connect to live WebSockets or server-sent event (SSE) endpoints when shifting from prototypes to actual production pipelines.
+- **Pure CSS Grid over Tailwind CSS**: The command surface uses highly specific, low-overhead custom CSS Grid definitions in CSS Modules rather than standard utilities. This prevents DOM bloat and allows standard 1080p display optimization.
+- **Glassmorphic Styling**: Card containers utilize a semi-transparent vapor surface (`rgba(10, 17, 32, 0.75)`) and thin borders, ensuring that the waterway coordinates and SVG lines flow cleanly beneath floating details.
+- **Space Mono Typography**: Applied specifically to numeric and alphanumeric outputs (Tracer IDs, Correlation hashes, lat/lng) to maintain ISRO/government command center styling.
 
 ---
 
-## 9. Future Technology Extensibility
+## 8. Integration Surfaces (Sprint Alignment)
 
-* **Synthetic Aperture Radar (SAR)**: Designed to support satellite SAR radar overlays, aiding in sand mining detection and illegal waste discharge tracking.
-* **Predictive AI Engine**: Extensible views ready to incorporate machine-learning projections to forecast river levels 48 hours in advance based on rain metrics.
-* **Logistics Corridor Optimization**: Integrates intermodal transit calculations directly into the Scenario Page to find highly efficient routes.
-
----
-
-## 10. Visual Wireframes & Screens Layouts (ASCII Mocks)
-
-### Screen 1: Global Operations Command Surface
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  🌊 NAMAMI GANGE   LIVE [•] | Active: 128 | Alerts: 23 | Good: 1247  |  20-MAY-2026 IST │
-├────────────┬─────────────────────────────────────────────────────────────┬─────────────┤
-│ NAVIGATION │ GLOBAL COMMAND SURFACE                                      │ ALERT FEED  │
-├────────────┤                                                             ├─────────────┤
-│ [🌐] Glob  │ ┌─────────────────────────────────────────────────────────┐ │ (•) Kanpur  │
-│ [🌊] Basin │ │   /\  (India Outline Map Viewport)                      │ │  BOD: 12.4  │
-│ [📍] Loc   │ │  /  \                                                   │ │  10:14 AM   │
-│ [🔮] Sim   │ │ /    \       (Luminous River Tracing)                   │ ├─────────────┤
-│ [📡] Sign  │ │ \    /                                                  │ │ (•) Jajmau  │
-│ [🏗️] Infra │ │  \  /   o (Varanasi Node)                               │ │  Discharge  │
-│ [💬] Collab│ │   \/                                                    │ │  10:31 AM   │
-│ [📊] Data  │ └─────────────────────────────────────────────────────────┘ ├─────────────┤
-│ [🏛️] Gov   │   Coordinates: LAT 25.3176° N | LON 82.9739° E              │ [View All]  │
-├────────────┴─────────────────────────────────────────────────────────────┴─────────────┤
-│ JD - Chief Ops Officer                                                    Namami Gange │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-### Screen 4: Scenario Simulation Page
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  🌊 NAMAMI GANGE   LIVE [•] | Weight Simulation View                     20-MAY-2026 IST │
-├────────────┬───────────────────────────────────────────────┬───────────────────────────┤
-│ NAVIGATION │ COMPARATIVE BASIN SCENARIOS                   │ CONTROLS & WEIGHTS        │
-├────────────┼───────────────────────────────┬───────────────┼───────────────────────────┤
-│ [🌐] Glob  │ BASELINE (SCENARIO A)         │ OPTIMIZED (B) │ Priority Weighting:       │
-│ [🌊] Basin │ ┌───────────────────────────┐ │ ┌───────────┐ │ Eco  [=========o------]  │
-│ [📍] Loc   │ │    ~~ River Path ~~       │ │ │ ~ River ~ │ │ Infra[======o---------]  │
-│ [🔮] Sim   │ │     (Degraded Zones)      │ │ │ (Clear)   │ ├───────────────────────────┤
-│ [📡] Sign  │ └───────────────────────────┘ │ └───────────┘ │ Constraint Toggles:       │
-│ [🏗️] Infra ├───────────────────────────────┴───────────────┤ [x] Flow Divert           │
-│ [💬] Collab│ DELTA CALCULATIONS                            │ [ ] Silt Dredge           │
-│ [📊] Data  │ Suitability: +18% | Risk: -12% | Econ: +27%    │ [x] Port Expand           │
-│ [🏛️] Gov   ├───────────────────────────────────────────────┼───────────────────────────┤
-│            │                                               │ [▶ Run Simulation]        │
-└────────────┴───────────────────────────────────────────────┴───────────────────────────┘
-```
-
-### Screen 3: Location Intelligence (Single-Point Detail View)
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  🌊 NAMAMI GANGE   LIVE [•] | Varanasi Hub Analysis                      20-MAY-2026 IST │
-├────────────┬───────────────────────────────────────────────┬───────────────────────────┤
-│ NAVIGATION │ HUB GEOSPATIAL FEED                           │ METRIC FACTOR CARDS       │
-├────────────┼───────────────────────────────────────────────┼───────────────────────────┤
-│ [🌐] Glob  │ ┌───────────────────────────────────────────┐ │ Suitability Score:        │
-│ [🌊] Basin │ │                 / \                       │ │ ┌─────────┐  Potential:   │
-│ [📍] Loc   │ │ (Varanasi Path)/   \ (IWT Terminal)       │ │ │  82%    │  HIGH      │
-│ [🔮] Sim   │ │               o─────o                     │ │ └─────────┘               │
-│ [📡] Sign  │ │              /                            │ ├───────────────────────────┤
-│ [🏗️] Infra │ │             / (Glow Radius)               │ │ Factors:                  │
-│ [💬] Collab│ └───────────────────────────────────────────┘ │ │ - Water Qual : 72% [=== ] │
-│ [📊] Data  │ Nearby:                                       │ │ - Logistics  : 88% [====] │
-│ [🏛️] Gov   │  IWT Terminal: 2.3km | Rail: 3.1km            │ │ - Silt Risk  : 80% [====] │
-└────────────┴───────────────────────────────────────────────┴───────────────────────────┘
-```
+- **Nupur Gavane (Geospatial Intelligence Lead)**: Dynamic suitability scoring and explicit factor progress bars expose exact score logic (no black boxes).
+- **Shravani Harde (Federation Runtime Lead)**: Live SVG node transitions, database latencies, and sync thresholds expose complete runtime topologies.
+- **Ankita Prajapati (Validation Layer)**: Explicit backward compatibility schema indicators and dynamic contract mismatch warning states.
+- **Nikhil (UI Visualization Lead)**: Implemented HSL tailored colors, clean visual zones, and micro-animations to maximize cognition and scan speed.
+- **Tester (Functional Validation)**: Verified responsive fit-to-viewport grid scaling and dynamic state engine transitions across all views under standard browser testing.

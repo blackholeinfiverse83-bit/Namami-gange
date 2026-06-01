@@ -1,40 +1,78 @@
+'use client';
+
 import React from 'react';
 import styles from './View.module.css';
+import ExecutiveMetricCard from '../shared/ExecutiveMetricCard';
 
-export default function GovernanceView() {
+interface GovernanceViewProps {
+  selectedLocationId?: string;
+  validationBreach?: boolean;
+  currentBlock?: number;
+  onLocationSelect?: (id: string) => void;
+}
+
+export default function GovernanceView({
+  selectedLocationId = 'varanasi',
+  validationBreach = false,
+  currentBlock = 1240,
+  onLocationSelect
+}: GovernanceViewProps) {
+  
+  const totalAlerts = validationBreach ? 24 : 23;
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>CM / Governance Intelligence View</h1>
-          <p className={styles.subtitle}>Executive strategic overview · High-level intelligence synthesis</p>
+          <p className={styles.subtitle}>Executive strategic overview · Sovereign intelligence synthesis</p>
         </div>
         <div className={styles.actions}>
-          <button className={styles.primaryBtn}>Share with Secretariat</button>
+          <button className={styles.primaryBtn} onClick={() => alert('Briefing document shared with Secretariat.')}>Share with Secretariat</button>
         </div>
       </div>
 
       <div className={styles.statsRow} style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-        <div className={styles.listCard} style={{ borderTop: '2px solid var(--eco-green)' }}>
-          <div className={styles.cardTitle}>Top Opportunity Zones</div>
-          <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--eco-green)' }}>12</div>
-          <div style={{ fontSize: '10px', color: 'var(--text-dim)', marginTop: '4px' }}>Varanasi, Patna corridors</div>
-        </div>
-        <div className={styles.listCard} style={{ borderTop: '2px solid var(--alert-orange)' }}>
-          <div className={styles.cardTitle}>High-Risk Regions</div>
-          <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--alert-orange)' }}>18</div>
-          <div style={{ fontSize: '10px', color: 'var(--text-dim)', marginTop: '4px' }}>Flood + pollution zones</div>
-        </div>
-        <div className={styles.listCard} style={{ borderTop: '2px solid var(--alert-red)' }}>
-          <div className={styles.cardTitle}>Critical Alerts</div>
-          <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--alert-red)' }}>23</div>
-          <div style={{ fontSize: '10px', color: 'var(--text-dim)', marginTop: '4px' }}>Requires immediate action</div>
-        </div>
-        <div className={styles.listCard} style={{ borderTop: '2px solid var(--river-blue)' }}>
-          <div className={styles.cardTitle}>Investment Potential</div>
-          <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--river-blue)' }}>₹2.4T</div>
-          <div style={{ fontSize: '10px', color: 'var(--text-dim)', marginTop: '4px' }}>Estimated infra value</div>
-        </div>
+        <ExecutiveMetricCard 
+          title="Opportunity Zones" 
+          value="12" 
+          description="Varanasi & Patna corridors" 
+          borderAccent="green"
+          insights={[
+            { text: 'NW-1 maritime feasibility is rated High.', status: 'healthy' },
+            { text: 'Inland seaplane docks show ready connectivity.', status: 'healthy' }
+          ]}
+        />
+        <ExecutiveMetricCard 
+          title="High-Risk Regions" 
+          value="18" 
+          description="Flood + pollution zones" 
+          borderAccent="amber"
+          insights={[
+            { text: 'Kanpur organic load continues to fluctuate.', status: 'warning' },
+            { text: 'Silt bottlenecks reported near Patna terminal.', status: 'warning' }
+          ]}
+        />
+        <ExecutiveMetricCard 
+          title="Critical Alerts" 
+          value={totalAlerts} 
+          description={validationBreach ? "ANOMALY ACTIVE IN BUFFER" : "All services secured"} 
+          borderAccent={validationBreach ? 'red' : 'blue'}
+          insights={[
+            { text: validationBreach ? 'CRITICAL: Schema validation breach active.' : 'JSON contract matches 100% of sensor registries.', status: validationBreach ? 'critical' : 'healthy' },
+            { text: `Deterministic Block Verification at #${currentBlock}.`, status: 'healthy' }
+          ]}
+        />
+        <ExecutiveMetricCard 
+          title="Investment Value" 
+          value="₹2.4T" 
+          description="Estimated infra corridor potential" 
+          borderAccent="blue"
+          insights={[
+            { text: 'Multimodal freight corridors showing 20% ROI.', status: 'healthy' },
+            { text: 'Private shipping grants are expanding NW-1.', status: 'healthy' }
+          ]}
+        />
       </div>
 
       <div className={styles.infoGrid} style={{ gridTemplateColumns: '1fr 320px', marginBottom: '16px' }}>
@@ -52,23 +90,23 @@ export default function GovernanceView() {
                 
                 {/* Risk Zones */}
                 <ellipse cx="155" cy="80" rx="20" ry="14" fill="rgba(229,57,53,0.1)" stroke="rgba(229,57,53,0.3)" strokeWidth="0.8" strokeDasharray="3,3" />
-                <ellipse cx="258" cy="75" rx="16" ry="12" fill="rgba(255,104,0,0.1)" stroke="rgba(255,104,0,0.3)" strokeWidth="0.8" strokeDasharray="3,3" />
+                <ellipse cx="258" cy="75" rx="16" ry="12" fill={validationBreach ? 'rgba(239, 68, 68, 0.15)' : 'rgba(255,104,0,0.1)'} stroke={validationBreach ? 'var(--alert-red)' : 'rgba(255,104,0,0.3)'} strokeWidth="0.8" strokeDasharray="3,3" />
                 
                 {/* Waterway main */}
                 <path d="M 118 68 Q 155 64 195 67 Q 230 70 265 74 Q 298 77 325 82 Q 348 86 368 90" fill="none" stroke="#1E88E5" strokeWidth="2" opacity="0.6" />
                 
                 {/* Key city markers */}
-                <circle cx="200" cy="68" r="5" fill="#4CAF50" opacity="0.9" />
-                <circle cx="290" cy="72" r="5" fill="#4CAF50" opacity="0.9" />
-                <circle cx="335" cy="80" r="4" fill="#4CAF50" opacity="0.9" />
-                <circle cx="258" cy="75" r="4" fill="#FF6800" opacity="0.8" />
-                <circle cx="155" cy="80" r="4" fill="#E53935" opacity="0.8" />
+                <circle cx="200" cy="68" r={selectedLocationId === 'varanasi' ? 7 : 5} fill={selectedLocationId === 'varanasi' ? 'var(--teal)' : '#4CAF50'} opacity="0.9" onClick={() => onLocationSelect?.('varanasi')} style={{ cursor: 'pointer' }} />
+                <circle cx="290" cy="72" r={selectedLocationId === 'patna' ? 7 : 5} fill={selectedLocationId === 'patna' ? 'var(--teal)' : '#4CAF50'} opacity="0.9" onClick={() => onLocationSelect?.('patna')} style={{ cursor: 'pointer' }} />
+                <circle cx="335" cy="80" r={selectedLocationId === 'kolkata' ? 6 : 4} fill={selectedLocationId === 'kolkata' ? 'var(--teal)' : '#4CAF50'} opacity="0.9" onClick={() => onLocationSelect?.('kolkata')} style={{ cursor: 'pointer' }} />
+                <circle cx="258" cy="75" r={selectedLocationId === 'prayagraj' ? 6 : 4} fill={selectedLocationId === 'prayagraj' ? 'var(--teal)' : '#FF6800'} opacity="0.8" onClick={() => onLocationSelect?.('prayagraj')} style={{ cursor: 'pointer' }} />
+                <circle cx="155" cy="80" r={selectedLocationId === 'kanpur' ? 6 : 4} fill={selectedLocationId === 'kanpur' ? 'var(--teal)' : '#E53935'} opacity="0.8" onClick={() => onLocationSelect?.('kanpur')} style={{ cursor: 'pointer' }} />
 
-                <text x="200" y="58" fontSize="7" fill="#A5D6A7" fontFamily="Space Mono" textAnchor="middle">VARANASI</text>
-                <text x="290" y="62" fontSize="7" fill="#A5D6A7" fontFamily="Space Mono" textAnchor="middle">PATNA</text>
-                <text x="335" y="70" fontSize="7" fill="#A5D6A7" fontFamily="Space Mono" textAnchor="middle">KOLKATA</text>
+                <text x="200" y="58" fontSize="7" fill={selectedLocationId === 'varanasi' ? 'var(--teal)' : '#A5D6A7'} fontFamily="var(--font-mono)" textAnchor="middle">VARANASI</text>
+                <text x="290" y="62" fontSize="7" fill={selectedLocationId === 'patna' ? 'var(--teal)' : '#A5D6A7'} fontFamily="var(--font-mono)" textAnchor="middle">PATNA</text>
+                <text x="335" y="70" fontSize="7" fill={selectedLocationId === 'kolkata' ? 'var(--teal)' : '#A5D6A7'} fontFamily="var(--font-mono)" textAnchor="middle">KOLKATA</text>
              </svg>
-             <div className={styles.mapLabel}>STRATEGIC INTELLIGENCE MAP</div>
+             <div className={styles.mapLabel}>STRATEGIC INTELLIGENCE MAP — ACTIVE FOCUS: {selectedLocationId.toUpperCase()}</div>
           </div>
         </div>
 

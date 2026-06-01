@@ -1,5 +1,22 @@
+'use client';
+
 import React, { useState } from 'react';
 import styles from './View.module.css';
+
+interface RecoveryEvent {
+  id: string;
+  time: string;
+  type: string;
+  status: 'RESOLVED' | 'ACTIVE';
+  corrId: string;
+  detail: string;
+}
+
+interface CollaborationProps {
+  recoveryEvents?: RecoveryEvent[];
+  onResolve?: (id: string) => void;
+  validationBreach?: boolean;
+}
 
 const initialMessages = [
   { user: 'Amit Kumar', initial: 'AK', time: '10:14 AM', text: 'Water quality anomaly detected near Kanpur. BOD at 12.4 mg/L. Cross-checking with upstream stations now.', color: '#1E3A6E' },
@@ -7,7 +24,11 @@ const initialMessages = [
   { user: 'Ravi Verma', initial: 'RV', time: '10:42 AM', text: 'Increasing sampling frequency at G-047 and G-052. Will update in 2 hours.', color: '#4A148C' },
 ];
 
-export default function Collaboration() {
+export default function Collaboration({
+  recoveryEvents = [],
+  onResolve,
+  validationBreach = false
+}: CollaborationProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [inputText, setInputText] = useState('');
 
@@ -29,16 +50,20 @@ export default function Collaboration() {
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Internal Collaboration Layer</h1>
-          <p className={styles.subtitle}>Intelligence discussion · Operational coordination · Annotations</p>
+          <p className={styles.subtitle}>Intelligence discussion · Operational coordination · Live Annotations</p>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr 280px', gap: '16px', height: '600px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr 320px', gap: '16px', height: '620px' }}>
         {/* Channels */}
-        <div className={styles.listCard}>
+        <div className={styles.listCard} style={{ overflowY: 'auto' }}>
           <div className={styles.cardTitle}>Channels</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {['# ganga-intelligence', '# maritime-ops', '# alerts-critical', '# env-monitoring'].map((channel, i) => (
+            {[
+              { name: '# ganga-intelligence', count: 0 },
+              { name: '# federation-audit', count: validationBreach ? 1 : 0 },
+              { name: '# env-monitoring', count: 0 }
+            ].map((channel, i) => (
               <div key={i} style={{ 
                 padding: '10px', 
                 borderRadius: '8px', 
@@ -46,8 +71,8 @@ export default function Collaboration() {
                 border: i === 0 ? '1px solid rgba(59, 130, 246, 0.2)' : '1px solid transparent',
                 cursor: 'pointer'
               }}>
-                <div style={{ fontSize: '13px', color: i === 0 ? 'var(--river-light)' : 'var(--text-secondary)', fontWeight: i === 0 ? '600' : '400' }}>{channel}</div>
-                {i === 2 && <div style={{ fontSize: '10px', color: 'var(--alert-red)', marginTop: '2px' }}>7 unread</div>}
+                <div style={{ fontSize: '13px', color: i === 0 ? 'var(--river-light)' : 'var(--text-secondary)', fontWeight: i === 0 ? '600' : '400' }}>{channel.name}</div>
+                {channel.count > 0 && <div style={{ fontSize: '10px', color: 'var(--alert-red)', marginTop: '2px', fontWeight: 'bold' }}>{channel.count} ACTIVE ANOMALY</div>}
               </div>
             ))}
           </div>
@@ -126,21 +151,54 @@ export default function Collaboration() {
           </div>
         </div>
 
-        {/* Annotations & Active Call */}
+        {/* Dynamic Recovery Panel Integration */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div className={styles.listCard}>
-            <div className={styles.cardTitle}>Active Annotations</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {[
-                { label: '🔴 Monitoring Station', desc: 'Kanpur · G-047' },
-                { label: '📍 Discharge Point', desc: 'Jajmau CETP' },
-                { label: '🏗️ Sand Mining Zone', desc: 'Son River · Sector 4' }
-              ].map((note, i) => (
-                <div key={i} style={{ padding: '10px', backgroundColor: 'var(--surface-2)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-                  <div style={{ fontSize: '12px', color: 'var(--text-primary)', fontWeight: '600' }}>{note.label}</div>
-                  <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '2px' }}>{note.desc}</div>
-                </div>
-              ))}
+          <div className={styles.listCard} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div className={styles.cardTitle}>Live recovery queue</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', overflowY: 'auto', flex: 1, paddingRight: '4px' }}>
+              {recoveryEvents.length === 0 ? (
+                <div style={{ fontSize: '12px', color: 'var(--text-dim)', padding: '10px', textAlign: 'center' }}>No active anomalies in reconciliation queue.</div>
+              ) : (
+                recoveryEvents.map((evt) => (
+                  <div key={evt.id} style={{ 
+                    padding: '10px', 
+                    backgroundColor: 'rgba(0,0,0,0.15)', 
+                    borderRadius: '8px', 
+                    border: '1px solid var(--border)', 
+                    borderLeft: `3px solid ${evt.status === 'ACTIVE' ? 'var(--alert-red)' : 'var(--eco-green)'}` 
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px' }}>
+                      <strong style={{ color: 'var(--text-primary)' }}>{evt.id}</strong>
+                      <span style={{ color: 'var(--text-dim)', fontSize: '9px', fontFamily: 'var(--font-mono)' }}>{evt.time}</span>
+                    </div>
+                    <p style={{ fontSize: '10.5px', color: 'var(--text-secondary)', margin: '0 0 6px 0', lineHeight: '1.3' }}>{evt.detail}</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '8px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>Block #{evt.corrId.split('-').pop()}</span>
+                      {evt.status === 'ACTIVE' && onResolve && (
+                        <button 
+                          onClick={() => onResolve(evt.id)}
+                          style={{
+                            fontSize: '8px',
+                            fontWeight: 'bold',
+                            fontFamily: 'var(--font-mono)',
+                            backgroundColor: 'var(--teal)',
+                            color: 'var(--deep-navy)',
+                            border: 'none',
+                            padding: '2px 6px',
+                            borderRadius: '3px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          RECONCILE
+                        </button>
+                      )}
+                      {evt.status === 'RESOLVED' && (
+                        <span style={{ fontSize: '8.5px', color: 'var(--eco-green)', fontWeight: 'bold' }}>✓ RESOLVED</span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 

@@ -1,17 +1,50 @@
+'use client';
+
 import React from 'react';
 import styles from './ReasoningPanel.module.css';
 
+interface SuitabilityLocation {
+  id: string;
+  name: string;
+  score: number;
+  level: 'HIGH' | 'MEDIUM' | 'LOW';
+  factors: { label: string; val: string; fill: string; color: string }[];
+  constraints: { label: string; val: string; fill: string; color: string }[];
+  infrastructure: string[];
+  explanation: string;
+  tracerId: string;
+  confidence: number;
+  lat: string;
+  lng: string;
+}
+
 interface ReasoningPanelProps {
+  activeLocation?: SuitabilityLocation;
   target?: string;
   reasoning?: string;
   confidence?: number;
+  tracerId?: string;
 }
 
 export default function ReasoningPanel({ 
-  target = "Varanasi Sector — Anomaly SIG-0941", 
-  reasoning = "Anomaly detected due to sudden variance in water turbidity (Δ+15%) coupled with localized vessel congregation. Cross-referencing with weather data suggests low-probability of natural cause. Likely unauthorized sand mining or discharge event.",
-  confidence = 94
+  activeLocation,
+  target,
+  reasoning,
+  confidence,
+  tracerId
 }: ReasoningPanelProps) {
+  
+  const displayTarget = target || (activeLocation 
+    ? `${activeLocation.name} · Analysis Vector`
+    : "Varanasi Sector — Anomaly SIG-0941");
+    
+  const displayReasoning = reasoning || (activeLocation 
+    ? activeLocation.explanation 
+    : "Anomaly detected due to sudden variance in water turbidity (Δ+15%) coupled with localized vessel congregation. Cross-referencing suggests unauthorized sand mining.");
+    
+  const displayConfidence = confidence || (activeLocation ? activeLocation.confidence : 94);
+  const displayTracer = tracerId || (activeLocation ? activeLocation.tracerId : 'TRC-8829-X');
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -24,24 +57,24 @@ export default function ReasoningPanel({
       </div>
       
       <div className={styles.content}>
-        <div className={styles.target}>{target}</div>
-        <p className={styles.reasoning}>{reasoning}</p>
+        <div className={styles.target}>{displayTarget}</div>
+        <p className={styles.reasoning}>{displayReasoning}</p>
         
         <div className={styles.footer}>
           <div className={styles.stat}>
             <span className={styles.statLabel}>Confidence</span>
-            <span className={styles.statValue}>{confidence}%</span>
+            <span className={styles.statValue} style={{ color: 'var(--teal)' }}>{displayConfidence}%</span>
           </div>
           <div className={styles.stat}>
-            <span className={styles.statLabel}>Trace ID</span>
-            <span className={styles.statValue}>TRC-8829-X</span>
+            <span className={styles.statLabel}>Tracer Registry</span>
+            <span className={styles.statValue}>{displayTracer}</span>
           </div>
         </div>
       </div>
       
       <div className={styles.actions}>
-        <button className={styles.actionBtn}>Deploy Onsite Unit</button>
-        <button className={styles.secondaryBtn}>Dismiss Signal</button>
+        <button className={styles.actionBtn} onClick={() => alert('Onsite monitoring unit deployed.')}>Deploy Onsite Unit</button>
+        <button className={styles.secondaryBtn} onClick={() => alert('Anomaly dismissed from buffer.')}>Dismiss Signal</button>
       </div>
     </div>
   );
