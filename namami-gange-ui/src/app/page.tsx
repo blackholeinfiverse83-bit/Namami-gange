@@ -18,6 +18,7 @@ import MapCard from '@/components/shared/MapCard';
 import TelemetryCard from '@/components/shared/TelemetryCard';
 import AlertCard from '@/components/shared/AlertCard';
 import styles from './page.module.css';
+import { fetchResults, mapBackendToFrontend } from '@/services/api';
 
 interface SuitabilityLocation {
   id: string;
@@ -193,6 +194,70 @@ export default function Home() {
       lng: '81.8463° E'
     }
   });
+
+  useEffect(() => {
+  async function loadBackendData() {
+    try {
+      const resultsData = await fetchResults('inland_port');
+
+      if (resultsData?.results) {
+        setSuitabilityLocations(prev => {
+          const updated = { ...prev };
+
+          resultsData.results.forEach((result: any) => {
+            const mapped = mapBackendToFrontend(result);
+
+            if (result.location_id.includes('varanasi')) {
+              updated.varanasi = {
+                ...updated.varanasi,
+                score: mapped.score,
+                level: mapped.level,
+                explanation: mapped.explanation,
+                confidence: mapped.confidence
+              };
+            }
+
+            if (result.location_id.includes('patna')) {
+              updated.patna = {
+                ...updated.patna,
+                score: mapped.score,
+                level: mapped.level,
+                explanation: mapped.explanation,
+                confidence: mapped.confidence
+              };
+            }
+
+            if (result.location_id.includes('kanpur')) {
+              updated.kanpur = {
+                ...updated.kanpur,
+                score: mapped.score,
+                level: mapped.level,
+                explanation: mapped.explanation,
+                confidence: mapped.confidence
+              };
+            }
+
+            if (result.location_id.includes('allahabad')) {
+              updated.prayagraj = {
+                ...updated.prayagraj,
+                score: mapped.score,
+                level: mapped.level,
+                explanation: mapped.explanation,
+                confidence: mapped.confidence
+              };
+            }
+          });
+
+          return updated;
+        });
+      }
+    } catch (err) {
+      console.error('Backend connection failed:', err);
+    }
+  }
+
+  loadBackendData();
+  }, []);
 
   // Dynamic simulation engine loops in background
   useEffect(() => {
