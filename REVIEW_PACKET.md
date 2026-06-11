@@ -9,10 +9,10 @@
 ## 1. Entry Point
 
 The operational command surface is structured under a unified modular Next.js router.
-- **Entry point URL**: `/`
-- **Main Page File**: `src/app/page.tsx`
+- **Entry point URL**: `/` and `/showcase` (dedicated operator showcase route)
+- **Main Page File**: `src/app/page.tsx` & `src/app/showcase/page.tsx`
 - **Global Stylesheet**: `src/app/globals.css`
-- **Dashboard Layout Stylesheet**: `src/app/page.module.css`
+- **Dashboard Layout Stylesheet**: `src/components/views/CommandCenter.module.css` and `src/app/page.module.css`
 
 ---
 
@@ -20,23 +20,17 @@ The operational command surface is structured under a unified modular Next.js ro
 
 To understand the core mechanics of our deterministic dashboard, review the following three pivotal files:
 
-1. **[src/app/page.tsx](file:///d:/Office%20project/Namami%20Gange/namami-gange-ui/src/app/page.tsx)**:
-   - Houses the centralized **Simulated State Engine**.
-   - Handles the 3-second tick loops advancing the active federation stages (`Ingestion -> Validation -> Replay -> Persistence -> Federation`).
-   - Tracks current block heights, cycles correlation IDs, and manages user selection of Northwest-1 corridors (Varanasi, Patna, Kolkata, Kanpur, Prayagraj).
-   - Generates simulated schema validation breaches and triggers backup reconciliation routines.
-   - **New**: Coordinates live state synchronization across *all 9 operational case views* inside `renderContent()`!
+1. **[src/components/views/CommandCenter.tsx](file:///C:/Users/pc45/Desktop/Nanami%20Gange/namami-gange-ui/src/components/views/CommandCenter.tsx)**:
+   - Centralizes the 9 required operational command surface zones (Top Status Bar, Live State, Priority Conditions, Recommendations, Signals, Dataset Intelligence, Ownership, Observability, and Historical Timeline).
+   - Manages interactive updates across selected locations, handles manual/automatic weir and contract reconciliation triggers, and toggles developer widgets depending on `showcaseMode`.
 
-2. **[src/components/shared/FederationTopology.tsx](file:///d:/Office%20project/Namami%20Gange/namami-gange-ui/src/components/shared/FederationTopology.tsx)**:
-   - Renders a custom, high-precision SVG network diagram of the federation nodes.
-   - animates moving data packet pulses traveling along connectors using SVG attributes (`cx`, `cy`, `<animate>`).
+2. **[src/app/showcase/page.tsx](file:///C:/Users/pc45/Desktop/Nanami%20Gange/namami-gange-ui/src/app/showcase/page.tsx)**:
+   - Serves as the clean, operator-facing production route for showcases, locking simulation buttons and rendering high-fidelity curated intelligence grids.
+
+3. **[src/components/shared/FederationTopology.tsx](file:///C:/Users/pc45/Desktop/Nanami%20Gange/namami-gange-ui/src/components/shared/FederationTopology.tsx)**:
+   - Renders the custom SVG node topology diagram displaying validation thresholds, latency, and message rates from `RUNTIME_OBSERVABILITY_PAYLOAD.json`.packet pulses traveling along connectors using SVG attributes (`cx`, `cy`, `<animate>`).
    - Displays real-time uptime metrics, latency (ms), and visual indicators representing service health.
    - Conforms fully to the new design system `TopologyCardProps` specification.
-
-3. **[src/components/shared/MapCard.tsx](file:///d:/Office%20project/Namami%20Gange/namami-gange-ui/src/components/shared/MapCard.tsx)**:
-   - Integrates the geographic viewport of truth, displaying waterway segments, suitability scoring overlays, and seaplane routes.
-   - Supports interactive, hoverable node highlighting and smooth layer filtering overlays, serving as the central coordinator for localized intelligence.
-   - Conforms fully to the design system `MapCardProps` specification.
 
 ---
 
@@ -77,13 +71,12 @@ graph TD
 
 ## 4. What Was Built
 
-During this convergence sprint, we transformed a basic, loosely structured SaaS dashboard prototype into an operational console:
-
-- **Revised Grid Architecture (Phase 1)**: Formulated a dense three-column, fit-to-viewport grid in `page.tsx` that clusters related observability indices together, eliminating whitespace and preventing vertical scrolling.
-- **Geospatial Layer Coupling (Phase 2)**: Linked live NW-1 waterway coordinates directly to the explanation layers. Included infrastructure opportunities like inland ports, seaplane grids, and regional siltation ratios.
-- **Federation Runtime Topology (Phase 3)**: Developed a dynamic SVG layout showing ingestion brokers, validation nodes, and sync statuses, integrated with moving package pulses.
-- **Replay Observability Deck (Phase 4)**: Created a dedicated read-only console that details deterministic block counts, SHA validation hashes, and correlation tracers.
-- **Executive Cognition Zone (Phase 5)**: Synthesized crucial telemetry to answer "what is happening?" within 3 seconds using HSL tailored colors.
+During this Command Center Completion Sprint (continuing the Chandragupta dashboard work), we implemented:
+- **9-Zone Layout Architecture (Phase 2)**: Formulated a dense fit-to-viewport command console layout containing all 9 critical zones (Top Status Bar, Live State, Priority Conditions, Recommendations, Signals, Dataset Intelligence, Ownership, Observability, and Historical Timeline) on a single, low-scroll screen.
+- **Dataset Intelligence Panel (Phase 3)**: Developed a detailed registry grid exposing dataset categories, owners, coverages, updates, signal contributions, and products (e.g. CWC Gauge, ISRO satellite data).
+- **Payload & Observability Visualizer (Phase 4 & 5)**: Configured ingestion mappings to consume `RUNTIME_OBSERVABILITY_PAYLOAD.json` and display system metrics, throughput counts, and specific transaction logs (e.g. `LIVE_STATE`, `OPERATIONAL_SIGNAL`) with matching payload names.
+- **Showcase Route Setup (Phase 6)**: Added a dedicated operator-facing route `/showcase` featuring realistic datasets and no simulation developer controls.
+- **Demo Hardening Fallbacks (Phase 7)**: Configured fail-safe local buffer states ensuring graceful degradation without crashes if connection feeds are lost.
 - **Design System Extraction & Implementation (Phase 6 & 7)**: 
   - Created `/design-system/` documentation in the root containing: `colors.md`, `spacing.md`, `dashboard_layout_patterns.md`, and `component_library.md`.
   - Fully built the **7 Reusable Primitives** as modular React files under `src/components/shared/`:
@@ -106,6 +99,10 @@ To guarantee government-grade resilience, the command surface observes and expos
 - **UI Exposure**: Highlighting a simulated contract validation breach drops "FEDERATION STATE" to `ANOMALOUS` (red pulse), validation nodes light red, and the replay chain log entries turn red (`BREACH` badge).
 - **Recovery Event**: An active entry is instantly pushed into the **Network Recovery & Audit Surface** at the bottom, registering the Correlation ID and spawning a button for manual/automatic database fallback buffers.
 - **Dynamic Propagation**: Toggling schema breach automatically propagates to `RealtimeSignals` (triggering critical red logs), `DatasetSources` (flagging degraded status), and `GovernanceView` (incrementing alerts).
+
+### Failure Case 3: Ingestion Feed Disconnection / API Outage
+- **UI Exposure**: Loss of server connectivity to `RUNTIME_OBSERVABILITY_PAYLOAD.json` triggers a local degradation state, displaying `SECURE (FALLBACK BUFFER)` or offline indicators.
+- **Recovery Event**: The app uses cached telemetry parameters to maintain complete NOC view layout rendering without crashing or showing blank pages.
 
 ### Failure Case 2: Waterway Depth Volatility (Draft depletion)
 - **UI Exposure**: If seasonal flows cause the Varanasi draft to drop below 2.0m, the navigational progress fill bar triggers a Warning Amber highlight, notifying river traffic controllers of silt bottlenecks.
@@ -130,6 +127,7 @@ To guarantee government-grade resilience, the command surface observes and expos
 
 ## 8. Integration Surfaces (Sprint Alignment)
 
+- **Soham (Lead Frontend / Command Center Integration)**: Took operational ownership of Chandragupta assets, refactored layout into a fit-to-viewport 9-zone surface, built the dataset panel, and implemented showcase view validation and graceful degradations.
 - **Nupur Gavane (Geospatial Intelligence Lead)**: Dynamic suitability scoring and explicit factor progress bars expose exact score logic (no black boxes).
 - **Shravani Harde (Federation Runtime Lead)**: Live SVG node transitions, database latencies, and sync thresholds expose complete runtime topologies.
 - **Ankita Prajapati (Validation Layer)**: Explicit backward compatibility schema indicators and dynamic contract mismatch warning states.

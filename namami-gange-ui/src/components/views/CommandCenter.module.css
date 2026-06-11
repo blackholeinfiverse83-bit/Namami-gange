@@ -1,0 +1,337 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--topbar-h));
+  padding: 12px;
+  gap: 12px;
+  box-sizing: border-box;
+  background-color: var(--deep-navy);
+  overflow: hidden;
+}
+
+/* Three-Column Operational Grid */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 310px 1fr 320px;
+  gap: 12px;
+  flex-grow: 1;
+  min-height: 0; /* Important for inner scrollable columns */
+}
+
+/* Column boxes */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+/* Custom scrollbars inside columns */
+.column::-webkit-scrollbar {
+  width: 4px;
+}
+.column::-webkit-scrollbar-thumb {
+  background: var(--surface-2);
+  border-radius: 2px;
+}
+
+/* Standardized glass card style */
+.card {
+  background: rgba(10, 17, 32, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-bottom: 2px;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.cardSubtitle {
+  font-size: 9px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+/* Top Status Panel */
+.topStatusRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* Dataset Panel */
+.datasetGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 190px;
+  overflow-y: auto;
+}
+
+.datasetItem {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.datasetItem:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border-bright);
+}
+
+.datasetMetaRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  font-size: 9.5px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+.metaLabel {
+  font-weight: bold;
+  color: var(--text-secondary);
+}
+
+/* Payload details visualizer */
+.payloadBadge {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.payloadLIVE_STATE { background: rgba(59, 130, 246, 0.15); color: var(--river-light); }
+.payloadOPERATIONAL_SIGNAL { background: rgba(20, 184, 166, 0.15); color: var(--teal); }
+.payloadPRIORITY_CONDITION { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
+.payloadRECOMMENDED_ACTION { background: rgba(16, 185, 129, 0.15); color: var(--eco-green); }
+.payloadHUMAN_OWNERSHIP { background: rgba(148, 163, 184, 0.15); color: var(--text-primary); }
+.payloadSTATUS_TRANSITION { background: rgba(239, 68, 68, 0.15); color: var(--alert-red); }
+.payloadCONFIDENCE_EVOLUTION { background: rgba(20, 184, 166, 0.15); color: var(--teal); }
+.payloadTEMPORAL_HISTORY { background: rgba(148, 163, 184, 0.15); color: var(--text-secondary); }
+
+/* Timeline and Replay styling */
+.timelineScroll {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.timelineItem {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.15);
+  border-left: 2px solid var(--river-blue);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  border-radius: 4px;
+}
+
+.timelineItemError {
+  border-left-color: var(--alert-red);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.timelineTime {
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.timelineText {
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+/* Control Panel Section */
+.controlsRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.controlBtn {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  flex: 1;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.playBtn {
+  background: rgba(20, 184, 166, 0.1);
+  color: var(--teal);
+  border-color: rgba(20, 184, 166, 0.2);
+}
+.playBtn:hover {
+  background: var(--teal);
+  color: var(--deep-navy);
+}
+
+.pauseBtn {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--river-blue);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+.pauseBtn:hover {
+  background: var(--river-blue);
+  color: white;
+}
+
+.breachBtn {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--amber);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+.breachBtn:hover {
+  background: var(--amber);
+  color: var(--deep-navy);
+}
+
+.clearBtn {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--alert-red);
+  border-color: rgba(239, 68, 68, 0.2);
+  animation: pulseBorder 1.5s infinite alternate ease-in-out;
+}
+.clearBtn:hover {
+  background: var(--alert-red);
+  color: white;
+}
+
+/* Bottom Event Ledger styling */
+.bottomLedger {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recoveryList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.recoveryCard {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--teal);
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 11px;
+}
+
+.recoveryCardActive {
+  border-left-color: var(--alert-red);
+}
+
+.recoveryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.recoveryTitle {
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
+.recoveryStatus {
+  font-weight: bold;
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.statusActive {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--alert-red);
+}
+
+.statusResolved {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--eco-green);
+}
+
+.recoveryFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  margin-top: 6px;
+  color: var(--text-dim);
+}
+
+.reconcileBtn {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: bold;
+  background: var(--teal);
+  color: var(--deep-navy);
+  border: none;
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.reconcileBtn:hover {
+  opacity: 0.9;
+}
+
+/* Map Card */
+.mapWrapper {
+  height: 190px;
+  background: radial-gradient(ellipse at 40% 50%, #0a2540 0%, #051020 70%);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Keyframe animations */
+@keyframes pulseBorder {
+  0% { border-color: rgba(239, 68, 68, 0.2); box-shadow: 0 0 2px rgba(239, 68, 68, 0.1); }
+  100% { border-color: rgba(239, 68, 68, 0.7); box-shadow: 0 0 6px rgba(239, 68, 68, 0.3); }
+}
